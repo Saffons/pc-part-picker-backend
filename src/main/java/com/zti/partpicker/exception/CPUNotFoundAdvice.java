@@ -1,4 +1,4 @@
-package exception;
+package com.zti.partpicker.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

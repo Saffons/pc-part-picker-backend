@@ -1,4 +1,4 @@
-package exception;
+package com.zti.partpicker.exception;
 
 public class CPUNotFoundException extends RuntimeException {
     public CPUNotFoundException(Long id) {

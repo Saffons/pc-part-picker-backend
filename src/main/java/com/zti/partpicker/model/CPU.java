@@ -1,4 +1,4 @@
-package model;
+package com.zti.partpicker.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import lombok.Setter;
 public class CPU {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    long id;
 
     @Column(name = "name")
     String name;

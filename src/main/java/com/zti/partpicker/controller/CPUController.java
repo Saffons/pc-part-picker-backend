@@ -1,16 +1,16 @@
-package controller;
+package com.zti.partpicker.controller;
 
 import java.util.List;
 
-import exception.CPUNotFoundException;
-import model.CPU;
+import com.zti.partpicker.exception.CPUNotFoundException;
+import com.zti.partpicker.model.CPU;
+import com.zti.partpicker.repository.CPURepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import repository.CPURepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api/parts")
+@RequestMapping("/api/parts/")
 public class CPUController {
 
     @Autowired
@@ -26,8 +26,8 @@ public class CPUController {
     }
 
     @PostMapping("/cpu")
-    CPU newCPU(@RequestBody CPU newEmployee) {
-        return repository.save(newEmployee);
+    CPU newCPU(@RequestBody CPU newCPU) {
+        return repository.save(newCPU);
     }
 
     @GetMapping("/cpu/{id}")
@@ -36,13 +36,16 @@ public class CPUController {
                 .orElseThrow(() -> new CPUNotFoundException(id));
     }
 
+
+    //TODO: repair org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [DELETE FROM SPRING_SESSION
+    //WHERE EXPIRY_TIME < ?
 //    @PutMapping("/employees/{id}")
-//    CPU replaceEmployee(@RequestBody CPU newEmployee, @PathVariable Long id) {
+//    CPU replaceCPU(@RequestBody CPU newCPU, @PathVariable Long id) {
 //
 //        return repository.findById(id)
-//                .map(employee -> {
-//                    employee.setName(newEmployee.getName());
-//                    employee.setRole(newEmployee.getRole());
+//                .map(cpu -> {
+//                    cpu.setName(newCPU.getName());
+//                    cpu.setRole(newCPU.getRole());
 //                    return repository.save(employee);
 //                })
 //                .orElseGet(() -> {
