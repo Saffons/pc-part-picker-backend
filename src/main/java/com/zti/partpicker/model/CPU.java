@@ -3,24 +3,16 @@ package com.zti.partpicker.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Table(name = "cpu")
-public class CPU {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
-
-    @Column(name = "name")
-    String name;
-
-    @Column(name = "manufacturer")
-    String manufacturer;
-
+public class CPU extends ComputerPart {
     @Column(name = "cores")
     int cores;
 
@@ -29,15 +21,4 @@ public class CPU {
 
     @Column(name = "socket")
     String socket;
-
-    @Column(name = "price")
-    double price;
-
-    public CPU() {
-
-    }
-
-    public CPU(Long id) {
-        this.id = id;
-    }
 }
