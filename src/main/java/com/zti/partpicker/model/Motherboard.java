@@ -11,14 +11,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "cpu")
-public class CPU extends ComputerPart {
-    @Column(name = "cores")
-    int cores;
-
-    @Column(name = "speed")
-    double speed;
+@Table(name = "motherboard")
+public class Motherboard extends ComputerPart {
+    @Column(name = "memoryType")
+    String memoryType;
 
     @Column(name = "socket")
     String socket;
+
+    @Column(name = "chipset")
+    String chipset;
+
+    @Column(name = "m2")
+    boolean m2;
 }

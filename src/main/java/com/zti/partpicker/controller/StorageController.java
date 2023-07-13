@@ -2,50 +2,50 @@ package com.zti.partpicker.controller;
 
 import java.util.List;
 
-import com.zti.partpicker.exception.CPUNotFoundException;
-import com.zti.partpicker.model.CPU;
-import com.zti.partpicker.repository.CPURepository;
+import com.zti.partpicker.exception.StorageNotFoundException;
+import com.zti.partpicker.model.Storage;
+import com.zti.partpicker.repository.StorageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api/parts/cpu")
-public class CPUController {
+@RequestMapping("/api/parts/storage/")
+public class StorageController {
 
     @Autowired
-    private final CPURepository repository;
+    private final StorageRepository repository;
 
-    CPUController(CPURepository repository) {
+    StorageController(StorageRepository repository) {
         this.repository = repository;
     }
 
     @GetMapping
-    List<CPU> all() {
+    List<Storage> all() {
         return repository.findAll();
     }
 
     @PostMapping
-    CPU newCPU(@RequestBody CPU newCPU) {
-        return repository.save(newCPU);
+    Storage newStorage(@RequestBody Storage newStorage) {
+        return repository.save(newStorage);
     }
 
     @GetMapping("/{id}")
-    CPU one(@PathVariable Long id) {
+    Storage one(@PathVariable Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new CPUNotFoundException(id));
+                .orElseThrow(() -> new StorageNotFoundException(id));
     }
 
 
     //TODO: repair org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [DELETE FROM SPRING_SESSION
     //WHERE EXPIRY_TIME < ?
 //    @PutMapping("/employees/{id}")
-//    CPU replaceCPU(@RequestBody CPU newCPU, @PathVariable Long id) {
+//    Storage replaceCPU(@RequestBody Storage newStorage, @PathVariable Long id) {
 //
 //        return repository.findById(id)
-//                .map(cpu -> {
-//                    cpu.setName(newCPU.getName());
-//                    cpu.setRole(newCPU.getRole());
+//                .map(Storage -> {
+//                    Storage.setName(newStorage.getName());
+//                    Storage.setRole(newStorage.getRole());
 //                    return repository.save(employee);
 //                })
 //                .orElseGet(() -> {
@@ -55,7 +55,7 @@ public class CPUController {
 //    }
 
     @DeleteMapping("/{id}")
-    void deleteCPU(@PathVariable Long id) {
+    void deleteStorage(@PathVariable Long id) {
         repository.deleteById(id);
     }
 }

@@ -2,50 +2,50 @@ package com.zti.partpicker.controller;
 
 import java.util.List;
 
-import com.zti.partpicker.exception.CPUNotFoundException;
-import com.zti.partpicker.model.CPU;
-import com.zti.partpicker.repository.CPURepository;
+import com.zti.partpicker.exception.MemoryNotFoundException;
+import com.zti.partpicker.model.Memory;
+import com.zti.partpicker.repository.MemoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api/parts/cpu")
-public class CPUController {
+@RequestMapping("/api/parts/memory/")
+public class MemoryController {
 
     @Autowired
-    private final CPURepository repository;
+    private final MemoryRepository repository;
 
-    CPUController(CPURepository repository) {
+    MemoryController(MemoryRepository repository) {
         this.repository = repository;
     }
 
     @GetMapping
-    List<CPU> all() {
+    List<Memory> all() {
         return repository.findAll();
     }
 
     @PostMapping
-    CPU newCPU(@RequestBody CPU newCPU) {
-        return repository.save(newCPU);
+    Memory newMemory(@RequestBody Memory newMemory) {
+        return repository.save(newMemory);
     }
 
     @GetMapping("/{id}")
-    CPU one(@PathVariable Long id) {
+    Memory one(@PathVariable Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new CPUNotFoundException(id));
+                .orElseThrow(() -> new MemoryNotFoundException(id));
     }
 
 
     //TODO: repair org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [DELETE FROM SPRING_SESSION
     //WHERE EXPIRY_TIME < ?
 //    @PutMapping("/employees/{id}")
-//    CPU replaceCPU(@RequestBody CPU newCPU, @PathVariable Long id) {
+//    Memory replaceCPU(@RequestBody Memory newMemory, @PathVariable Long id) {
 //
 //        return repository.findById(id)
-//                .map(cpu -> {
-//                    cpu.setName(newCPU.getName());
-//                    cpu.setRole(newCPU.getRole());
+//                .map(Memory -> {
+//                    Memory.setName(newMemory.getName());
+//                    Memory.setRole(newMemory.getRole());
 //                    return repository.save(employee);
 //                })
 //                .orElseGet(() -> {
@@ -55,7 +55,7 @@ public class CPUController {
 //    }
 
     @DeleteMapping("/{id}")
-    void deleteCPU(@PathVariable Long id) {
+    void deleteMemory(@PathVariable Long id) {
         repository.deleteById(id);
     }
 }

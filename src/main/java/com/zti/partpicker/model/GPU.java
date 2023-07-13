@@ -11,14 +11,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "cpu")
-public class CPU extends ComputerPart {
+@Table(name = "gpu")
+public class GPU extends ComputerPart {
     @Column(name = "cores")
-    int cores;
+    int memory;
 
     @Column(name = "speed")
     double speed;
-
-    @Column(name = "socket")
-    String socket;
 }

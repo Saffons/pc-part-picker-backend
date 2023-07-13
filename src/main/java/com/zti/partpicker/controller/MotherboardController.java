@@ -2,50 +2,50 @@ package com.zti.partpicker.controller;
 
 import java.util.List;
 
-import com.zti.partpicker.exception.CPUNotFoundException;
-import com.zti.partpicker.model.CPU;
-import com.zti.partpicker.repository.CPURepository;
+import com.zti.partpicker.exception.MotherboardNotFoundException;
+import com.zti.partpicker.model.Motherboard;
+import com.zti.partpicker.repository.MotherboardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api/parts/cpu")
-public class CPUController {
+@RequestMapping("/api/parts/motherboard/")
+public class MotherboardController {
 
     @Autowired
-    private final CPURepository repository;
+    private final MotherboardRepository repository;
 
-    CPUController(CPURepository repository) {
+    MotherboardController(MotherboardRepository repository) {
         this.repository = repository;
     }
 
     @GetMapping
-    List<CPU> all() {
+    List<Motherboard> all() {
         return repository.findAll();
     }
 
     @PostMapping
-    CPU newCPU(@RequestBody CPU newCPU) {
-        return repository.save(newCPU);
+    Motherboard newMotherboard(@RequestBody Motherboard newMotherboard) {
+        return repository.save(newMotherboard);
     }
 
     @GetMapping("/{id}")
-    CPU one(@PathVariable Long id) {
+    Motherboard one(@PathVariable Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new CPUNotFoundException(id));
+                .orElseThrow(() -> new MotherboardNotFoundException(id));
     }
 
 
     //TODO: repair org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [DELETE FROM SPRING_SESSION
     //WHERE EXPIRY_TIME < ?
 //    @PutMapping("/employees/{id}")
-//    CPU replaceCPU(@RequestBody CPU newCPU, @PathVariable Long id) {
+//    Motherboard replaceCPU(@RequestBody Motherboard newMotherboard, @PathVariable Long id) {
 //
 //        return repository.findById(id)
-//                .map(cpu -> {
-//                    cpu.setName(newCPU.getName());
-//                    cpu.setRole(newCPU.getRole());
+//                .map(Motherboard -> {
+//                    Motherboard.setName(newMotherboard.getName());
+//                    Motherboard.setRole(newMotherboard.getRole());
 //                    return repository.save(employee);
 //                })
 //                .orElseGet(() -> {
@@ -55,7 +55,7 @@ public class CPUController {
 //    }
 
     @DeleteMapping("/{id}")
-    void deleteCPU(@PathVariable Long id) {
+    void deleteMotherboard(@PathVariable Long id) {
         repository.deleteById(id);
     }
 }
