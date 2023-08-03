@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api/parts/motherboard/")
+@RequestMapping("/api/parts/motherboard")
 public class MotherboardController {
 
     @Autowired
