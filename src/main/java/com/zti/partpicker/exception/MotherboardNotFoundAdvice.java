@@ -12,7 +12,7 @@ class MotherboardNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(MotherboardNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String employeeNotFoundHandler(MotherboardNotFoundException ex) {
+    String motherboardNotFoundHandler(MotherboardNotFoundException ex) {
         return ex.getMessage();
     }
 }

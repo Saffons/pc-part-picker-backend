@@ -12,7 +12,7 @@ class MemoryNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(MemoryNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String employeeNotFoundHandler(MemoryNotFoundException ex) {
+    String memoryNotFoundHandler(MemoryNotFoundException ex) {
         return ex.getMessage();
     }
 }

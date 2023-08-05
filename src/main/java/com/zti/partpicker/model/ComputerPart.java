@@ -14,6 +14,8 @@ import lombok.Setter;
 public abstract class ComputerPart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    @PrimaryKeyJoinColumn(name="id")
     long id;
 
     @Column(name = "name")

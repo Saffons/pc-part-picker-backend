@@ -12,7 +12,7 @@ class CPUNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(CPUNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String employeeNotFoundHandler(CPUNotFoundException ex) {
+    String cpuNotFoundHandler(CPUNotFoundException ex) {
         return ex.getMessage();
     }
 }

@@ -12,7 +12,7 @@ class StorageNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(StorageNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String employeeNotFoundHandler(StorageNotFoundException ex) {
+    String storageNotFoundHandler(StorageNotFoundException ex) {
         return ex.getMessage();
     }
 }

@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-class GPUNotFoundAdvice {
+class AccountNotFoundAdvice {
 
     @ResponseBody
-    @ExceptionHandler(GPUNotFoundException.class)
+    @ExceptionHandler(AccountNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String gpuNotFoundHandler(GPUNotFoundException ex) {
+    String accountNotFoundHandler(AccountNotFoundException ex) {
         return ex.getMessage();
     }
 }
