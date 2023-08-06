@@ -6,6 +6,9 @@ import com.zti.partpicker.exception.AccountNotFoundException;
 import com.zti.partpicker.model.Account;
 import com.zti.partpicker.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -25,9 +28,26 @@ public class AccountController {
         return repository.findAll();
     }
 
+    @GetMapping("/hey")
+    public String hello(Authentication authentication) {
+        return "Hello, " + authentication.getName() + "!" + authentication.getAuthorities();
+    }
+
     @PostMapping
     Account newAccount(@RequestBody Account newAccount) {
+        PasswordEncoder enc = new BCryptPasswordEncoder();
+        newAccount.setPassword(enc.encode(newAccount.getPassword()));
+        newAccount.setRole("ROLE_user");
         return repository.save(newAccount);
+    }
+
+    @PostMapping("/login")
+    void login(@RequestBody Account account) {
+        PasswordEncoder enc = new BCryptPasswordEncoder();
+        account.setPassword(enc.encode(account.getPassword()));
+        Account acc = repository.getAccountByLogin(account.getLogin());
+
+        if (account.getPassword() == acc.getPassword());
     }
 
     @GetMapping("/{id}")

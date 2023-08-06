@@ -26,8 +26,8 @@ public class Account {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "isAdmin", columnDefinition = "boolean default false")
-    private boolean isAdmin;
+    @Column(name = "role")
+    private String role;
 
     @Column(name = "firstName")
     private String firstName;
