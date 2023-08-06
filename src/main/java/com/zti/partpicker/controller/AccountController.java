@@ -5,8 +5,8 @@ import java.util.List;
 import com.zti.partpicker.exception.AccountNotFoundException;
 import com.zti.partpicker.model.Account;
 import com.zti.partpicker.repository.AccountRepository;
-import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +25,7 @@ public class AccountController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     List<Account> all() {
         return repository.findAll();
     }
