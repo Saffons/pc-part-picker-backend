@@ -12,9 +12,9 @@ public class AccountDetailsServiceImpl implements UserDetailsService {
     private AccountRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username)
-            throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account user = userRepository.getAccountByLogin(username);
+
 
         if (user == null) {
             throw new UsernameNotFoundException("Could not find user");

@@ -36,24 +36,6 @@ public class MemoryController {
                 .orElseThrow(() -> new MemoryNotFoundException(id));
     }
 
-
-    //TODO: repair org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [DELETE FROM SPRING_SESSION
-    //WHERE EXPIRY_TIME < ?
-//    @PutMapping("/employees/{id}")
-//    Memory replaceCPU(@RequestBody Memory newMemory, @PathVariable Long id) {
-//
-//        return repository.findById(id)
-//                .map(Memory -> {
-//                    Memory.setName(newMemory.getName());
-//                    Memory.setRole(newMemory.getRole());
-//                    return repository.save(employee);
-//                })
-//                .orElseGet(() -> {
-//                    newEmployee.setId(id);
-//                    return repository.save(newEmployee);
-//                });
-//    }
-
     @DeleteMapping("/{id}")
     void deleteMemory(@PathVariable Long id) {
         repository.deleteById(id);

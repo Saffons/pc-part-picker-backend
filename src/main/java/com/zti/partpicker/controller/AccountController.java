@@ -5,6 +5,7 @@ import java.util.List;
 import com.zti.partpicker.exception.AccountNotFoundException;
 import com.zti.partpicker.model.Account;
 import com.zti.partpicker.repository.AccountRepository;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,17 +38,8 @@ public class AccountController {
     Account newAccount(@RequestBody Account newAccount) {
         PasswordEncoder enc = new BCryptPasswordEncoder();
         newAccount.setPassword(enc.encode(newAccount.getPassword()));
-        newAccount.setRole("ROLE_user");
+        newAccount.setRole("ROLE_USER");
         return repository.save(newAccount);
-    }
-
-    @PostMapping("/login")
-    void login(@RequestBody Account account) {
-        PasswordEncoder enc = new BCryptPasswordEncoder();
-        account.setPassword(enc.encode(account.getPassword()));
-        Account acc = repository.getAccountByLogin(account.getLogin());
-
-        if (account.getPassword() == acc.getPassword());
     }
 
     @GetMapping("/{id}")

@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class AccountDetails implements UserDetails {
 
-    private Account user;
+    private final Account user;
 
     public AccountDetails(Account user) {
         this.user = user;
@@ -19,6 +19,7 @@ public class AccountDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());
+        System.out.println(Arrays.asList(authority));
         return Arrays.asList(authority);
     }
 

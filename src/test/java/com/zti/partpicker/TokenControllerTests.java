@@ -3,6 +3,7 @@ package com.zti.partpicker;
 import com.zti.partpicker.config.RestConfig;
 import com.zti.partpicker.controller.AccountController;
 import com.zti.partpicker.controller.TokenController;
+import com.zti.partpicker.repository.AccountRepository;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest({ AccountController.class, TokenController.class })
-@Import(RestConfig.class)
+@Import({ RestConfig.class })
 public class TokenControllerTests {
 
     @Autowired

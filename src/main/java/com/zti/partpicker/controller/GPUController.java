@@ -5,6 +5,7 @@ import java.util.List;
 import com.zti.partpicker.exception.GPUNotFoundException;
 import com.zti.partpicker.model.GPU;
 import com.zti.partpicker.repository.GPURepository;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ public class GPUController {
         this.repository = repository;
     }
 
+    @RolesAllowed("ROLE_ADMIN")
     @GetMapping
     List<GPU> all() {
         return repository.findAll();
@@ -30,29 +32,12 @@ public class GPUController {
         return repository.save(newGPU);
     }
 
+    @RolesAllowed("ROLE_USER")
     @GetMapping("/{id}")
     GPU one(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new GPUNotFoundException(id));
     }
-
-
-    //TODO: repair org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [DELETE FROM SPRING_SESSION
-    //WHERE EXPIRY_TIME < ?
-//    @PutMapping("/employees/{id}")
-//    GPU replaceCPU(@RequestBody GPU newGPU, @PathVariable Long id) {
-//
-//        return repository.findById(id)
-//                .map(gpu -> {
-//                    gpu.setName(newGPU.getName());
-//                    gpu.setRole(newGPU.getRole());
-//                    return repository.save(employee);
-//                })
-//                .orElseGet(() -> {
-//                    newEmployee.setId(id);
-//                    return repository.save(newEmployee);
-//                });
-//    }
 
     @DeleteMapping("/{id}")
     void deleteGPU(@PathVariable Long id) {

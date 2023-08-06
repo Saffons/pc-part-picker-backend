@@ -3,8 +3,6 @@ package com.zti.partpicker.controller;
 import java.time.Instant;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,8 +18,6 @@ public class TokenController {
     @Autowired
     JwtEncoder encoder;
 
-    Logger logger = LoggerFactory.getLogger(TokenController.class);
-
     @PostMapping("/token")
     public String token(Authentication authentication) {
         Instant now = Instant.now();
@@ -36,7 +32,6 @@ public class TokenController {
                 .subject(authentication.getName())
                 .claim("scope", scope)
                 .build();
-        logger.info(scope);
         return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 

@@ -36,24 +36,6 @@ public class StorageController {
                 .orElseThrow(() -> new StorageNotFoundException(id));
     }
 
-
-    //TODO: repair org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [DELETE FROM SPRING_SESSION
-    //WHERE EXPIRY_TIME < ?
-//    @PutMapping("/employees/{id}")
-//    Storage replaceCPU(@RequestBody Storage newStorage, @PathVariable Long id) {
-//
-//        return repository.findById(id)
-//                .map(Storage -> {
-//                    Storage.setName(newStorage.getName());
-//                    Storage.setRole(newStorage.getRole());
-//                    return repository.save(employee);
-//                })
-//                .orElseGet(() -> {
-//                    newEmployee.setId(id);
-//                    return repository.save(newEmployee);
-//                });
-//    }
-
     @DeleteMapping("/{id}")
     void deleteStorage(@PathVariable Long id) {
         repository.deleteById(id);
