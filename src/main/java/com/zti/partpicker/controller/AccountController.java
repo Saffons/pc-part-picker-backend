@@ -25,7 +25,7 @@ public class AccountController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'SCOPE_ROLE_ADMIN')")
     List<Account> all() {
         return repository.findAll();
     }
@@ -43,6 +43,7 @@ public class AccountController {
         return repository.save(newAccount);
     }
 
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/{id}")
     Account one(@PathVariable Long id) {
         return repository.findById(id)
