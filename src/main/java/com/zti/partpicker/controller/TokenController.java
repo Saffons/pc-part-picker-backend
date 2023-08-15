@@ -3,6 +3,7 @@ package com.zti.partpicker.controller;
 import java.time.Instant;
 import java.util.stream.Collectors;
 
+import com.zti.partpicker.model.AccountDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,8 +35,10 @@ public class TokenController {
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expiry))
                 .subject(authentication.getName())
+                .id(((AccountDetails) authentication.getPrincipal()).getId().toString())
                 .claim("scope", scope)
                 .build();
+
         return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 

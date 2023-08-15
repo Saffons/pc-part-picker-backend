@@ -3,6 +3,8 @@ package com.zti.partpicker.controller;
 import java.util.List;
 
 import com.zti.partpicker.exception.ConfigurationNotFoundException;
+import com.zti.partpicker.mapper.ConfigurationResponse;
+import com.zti.partpicker.mapper.ConfigurationService;
 import com.zti.partpicker.model.Configuration;
 import com.zti.partpicker.repository.ConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +18,30 @@ public class ConfigurationController {
     @Autowired
     private final ConfigurationRepository repository;
 
-    ConfigurationController(ConfigurationRepository repository) {
+    @Autowired
+    private final ConfigurationService configurationService;
+
+    ConfigurationController(ConfigurationRepository repository, ConfigurationService configurationService) {
         this.repository = repository;
+        this.configurationService = configurationService;
     }
 
     @GetMapping
-    List<Configuration> all() {
-        return repository.findAll();
+    List<ConfigurationResponse> all() {
+        return repository
+                .findAll()
+                .stream()
+                .map((configurationService::createConfigurationResponse))
+                .toList();
+    }
+
+    @GetMapping("/user/{id}")
+    List<ConfigurationResponse> allById(@PathVariable Long id) {
+        return repository
+                .findAllByAccount(id)
+                .stream()
+                .map((configurationService::createConfigurationResponse))
+                .toList();
     }
 
     @PostMapping

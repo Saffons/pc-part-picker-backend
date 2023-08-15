@@ -17,28 +17,16 @@ public class Configuration {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(referencedColumnName = "id")
-    private Account account;
+    private Long account;
 
-    @OneToOne
-    @MapsId
-    private CPU cpu;
+    private Long cpu;
 
-    @OneToOne
-    @MapsId
-    private GPU gpu;
+    private Long gpu;
 
-    @OneToOne
-    @MapsId
-    private Memory memory;
+    private Long memory;
 
-    @OneToOne
-    @MapsId
-    private Motherboard motherboard;
+    private Long motherboard;
 
-    @OneToOne
-    @MapsId
-    private Storage storage;
+    private Long storage;
 
 }

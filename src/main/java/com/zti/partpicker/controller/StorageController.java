@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.zti.partpicker.exception.StorageNotFoundException;
 import com.zti.partpicker.model.Storage;
+import com.zti.partpicker.repository.ConfigurationRepository;
 import com.zti.partpicker.repository.StorageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -16,8 +18,12 @@ public class StorageController {
     @Autowired
     private final StorageRepository repository;
 
-    StorageController(StorageRepository repository) {
+    @Autowired
+    private final ConfigurationRepository configurationRepository;
+
+    StorageController(StorageRepository repository, ConfigurationRepository configurationRepository) {
         this.repository = repository;
+        this.configurationRepository = configurationRepository;
     }
 
     @GetMapping
@@ -37,7 +43,11 @@ public class StorageController {
     }
 
     @DeleteMapping("/{id}")
-    void deleteStorage(@PathVariable Long id) {
+    ResponseEntity<String> deleteStorage(@PathVariable Long id) {
+        if (configurationRepository.findAllByStorage(id).size() > 0) {
+            return ResponseEntity.badRequest().build();
+        };
         repository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }

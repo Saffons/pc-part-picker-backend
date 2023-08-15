@@ -65,6 +65,8 @@ public class RestConfig {
                         .requestMatchers("/logout").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/account").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/parts/**").hasAnyAuthority("ROLE_ADMIN", "SCOPE_ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/parts/**").hasAnyAuthority("ROLE_ADMIN", "SCOPE_ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .csrf((csrf) -> csrf.ignoringRequestMatchers("/token", "/logout"))
@@ -101,13 +103,13 @@ public class RestConfig {
         return new NimbusJwtEncoder(jwks);
     }
 
-    @Lazy
-    @Bean
-    public RoleHierarchy roleHierarchy() {
-        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        String hierarchy = "ROLE_ADMIN > ROLE_USER \n ROLE_ROLE_ADMIN > ROLE_ROLE_USER \n SCOPE_ROLE_ADMIN > SCOPE_ROLE_USER";
-        roleHierarchy.setHierarchy(hierarchy);
-        return roleHierarchy;
-    }
+//    @Lazy
+//    @Bean
+//    public RoleHierarchy roleHierarchy() {
+//        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+//        String hierarchy = "ROLE_ADMIN > ROLE_USER \n ROLE_ROLE_ADMIN > ROLE_ROLE_USER \n SCOPE_ROLE_ADMIN > SCOPE_ROLE_USER";
+//        roleHierarchy.setHierarchy(hierarchy);
+//        return roleHierarchy;
+//    }
 
 }

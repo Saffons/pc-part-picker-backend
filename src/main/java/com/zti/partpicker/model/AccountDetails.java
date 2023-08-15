@@ -1,6 +1,5 @@
 package com.zti.partpicker.model;
 
-
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -14,6 +13,10 @@ public class AccountDetails implements UserDetails {
 
     public AccountDetails(Account user) {
         this.user = user;
+    }
+
+    public Long getId() {
+        return this.user.getId();
     }
 
     @Override

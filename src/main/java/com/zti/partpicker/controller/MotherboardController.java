@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.zti.partpicker.exception.MotherboardNotFoundException;
 import com.zti.partpicker.model.Motherboard;
+import com.zti.partpicker.repository.ConfigurationRepository;
 import com.zti.partpicker.repository.MotherboardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -16,8 +18,12 @@ public class MotherboardController {
     @Autowired
     private final MotherboardRepository repository;
 
-    MotherboardController(MotherboardRepository repository) {
+    @Autowired
+    private final ConfigurationRepository configurationRepository;
+
+    MotherboardController(MotherboardRepository repository, ConfigurationRepository configurationRepository) {
         this.repository = repository;
+        this.configurationRepository = configurationRepository;
     }
 
     @GetMapping
@@ -37,7 +43,11 @@ public class MotherboardController {
     }
 
     @DeleteMapping("/{id}")
-    void deleteMotherboard(@PathVariable Long id) {
+    ResponseEntity<String> deleteMotherboard(@PathVariable Long id) {
+        if (configurationRepository.findAllByMotherboard(id).size() > 0) {
+            return ResponseEntity.badRequest().build();
+        };
         repository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }
