@@ -1,0 +1,8 @@
+com.zti.partpicker
+com.zti.partpicker.aspect
+com.zti.partpicker.config
+com.zti.partpicker.controller
+com.zti.partpicker.exception
+com.zti.partpicker.mapper
+com.zti.partpicker.model
+com.zti.partpicker.repository
