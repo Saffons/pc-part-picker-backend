@@ -5,6 +5,10 @@ import com.zti.partpicker.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service that is used to create valid JSON response
+ * that includes information about every computer part from Configuration object
+ */
 @Service
 public class ConfigurationService {
     private final ConfigurationRepository configurationRepository;
@@ -14,6 +18,15 @@ public class ConfigurationService {
     private final MotherboardRepository motherboardRepository;
     private final StorageRepository storageRepository;
 
+    /**
+     * Constructor of the ConfigurationService class
+     * @param configurationRepository configurationRepository
+     * @param cpuRepository cpuRepository
+     * @param gpuRepository gpuRepository
+     * @param memoryRepository memoryRepository
+     * @param motherboardRepository motherboardRepository
+     * @param storageRepository storageRepository
+     */
     public ConfigurationService(ConfigurationRepository configurationRepository,
                                 CPURepository cpuRepository,
                                 GPURepository gpuRepository,
@@ -28,6 +41,11 @@ public class ConfigurationService {
         this.storageRepository = storageRepository;
     }
 
+    /**
+     *
+     * @param configuration Configuration that is being mapped to ConfigurationResponse
+     * @return valid ConfigurationResponse object
+     */
     @Transactional
     public ConfigurationResponse createConfigurationResponse(Configuration configuration) {
         CPU cpu = cpuRepository.findById(configuration.getCpu()).orElse(null);

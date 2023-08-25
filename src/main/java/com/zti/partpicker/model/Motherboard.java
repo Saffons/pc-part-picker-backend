@@ -6,6 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * This class represents Motherboard entity and consists of following information:
+ * type of memory slots, motherboard's CPU socket, chipset and information if
+ * there are any M2 slots on the board.
+ */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

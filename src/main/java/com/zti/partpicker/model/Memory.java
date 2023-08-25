@@ -6,6 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * This class represents Memory entity and consists of following information:
+ * Memory type (e.g. DDR4), its capacity (in MB) and clock speed (in MHz).
+ */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.util.stream.Collectors;
 
 import com.zti.partpicker.model.AccountDetails;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -15,13 +14,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = "http://localhost:3000")
+/**
+ * Controller class responsible for handling token-related operations and endpoints.
+ */
+@CrossOrigin(origins = "https://kaktus-react-spring.netlify.app")
 @RestController
 @RequestMapping("/token")
 public class TokenController {
 
-    @Autowired
-    JwtEncoder encoder;
+    private final JwtEncoder encoder;
+
+    public TokenController(JwtEncoder encoder) {
+        this.encoder = encoder;
+    }
+
+    /**
+     * Function for building JSON Web Token
+     *
+     * @param authentication Authentication object that has information about current user's
+     *                       login information and authorities
+     * @return JWT that is used for authentication for other endpoints
+     */
 
     @PostMapping()
     public String token(Authentication authentication) {

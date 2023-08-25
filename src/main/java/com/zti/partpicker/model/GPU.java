@@ -6,6 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * This class represents GPU entity and consists of following information:
+ * capacity of its memory (in MB) and its clock speed (in MHz).
+ */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

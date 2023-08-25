@@ -14,11 +14,8 @@ import com.zti.partpicker.model.AccountDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -36,6 +33,10 @@ import org.springframework.security.oauth2.server.resource.web.access.BearerToke
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
+/**
+ * Configuration class for setting up security and authentication mechanisms for the REST API.
+ */
+
 @Configuration
 @EnableMethodSecurity
 public class RestConfig {
@@ -47,16 +48,33 @@ public class RestConfig {
     RSAPrivateKey priv;
 
 
+    /**
+     * Configures the user details service to provide account details for authentication.
+     *
+     * @return The configured UserDetailsService.
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         return new AccountDetailsServiceImpl();
     }
 
+    /**
+     * Creates an instance of BCryptPasswordEncoder for encoding passwords.
+     *
+     * @return The BCryptPasswordEncoder instance.
+     */
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configures the security filter chain with authorization rules and settings.
+     *
+     * @param http The HttpSecurity instance to configure.
+     * @return The configured SecurityFilterChain instance.
+     * @throws Exception If an error occurs while configuring.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -82,6 +100,11 @@ public class RestConfig {
         return http.build();
     }
 
+    /**
+     * Creates and configures an instance of DaoAuthenticationProvider for authentication.
+     *
+     * @return The configured DaoAuthenticationProvider instance.
+     */
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -91,25 +114,26 @@ public class RestConfig {
         return authProvider;
     }
 
+    /**
+     * Creates a JwtDecoder instance for decoding JWT tokens.
+     *
+     * @return The JwtDecoder instance.
+     */
     @Bean
     JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder.withPublicKey(this.key).build();
     }
 
+    /**
+     * Creates a JwtEncoder instance for encoding JWT tokens.
+     *
+     * @return The JwtEncoder instance.
+     */
     @Bean
     JwtEncoder jwtEncoder() {
         JWK jwk = new RSAKey.Builder(this.key).privateKey(this.priv).build();
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
     }
-
-//    @Lazy
-//    @Bean
-//    public RoleHierarchy roleHierarchy() {
-//        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-//        String hierarchy = "ROLE_ADMIN > ROLE_USER \n ROLE_ROLE_ADMIN > ROLE_ROLE_USER \n SCOPE_ROLE_ADMIN > SCOPE_ROLE_USER";
-//        roleHierarchy.setHierarchy(hierarchy);
-//        return roleHierarchy;
-//    }
 
 }

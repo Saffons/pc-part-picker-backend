@@ -8,6 +8,12 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Class that represents Account entity. It consist of fields such as
+ * accountId, login, password, role, firstName, lastName, email
+ * and list of user's configurations.
+ */
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

@@ -5,6 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Class that is used for mapping Configuration object (that has references to CPU, GPU, etc.)
+ * to JSON response that contains all information about every computer part from it
+ */
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

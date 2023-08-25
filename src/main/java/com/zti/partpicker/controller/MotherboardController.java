@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:3000")
+/**
+ * Controller class responsible for handling Motherboard-related operations and endpoints.
+ */
+@CrossOrigin(origins = "https://kaktus-react-spring.netlify.app")
 @RestController
 @RequestMapping("/api/parts/motherboard")
 public class MotherboardController {
@@ -21,6 +24,12 @@ public class MotherboardController {
     @Autowired
     private final ConfigurationRepository configurationRepository;
 
+    /**
+     * Constructor for the MotherboardController class.
+     *
+     * @param repository An instance of MotherboardRepository for interacting with Motherboards data.
+     * @param configurationRepository An instance of ConfigurationRepository for preparing JSON responses
+     */
     MotherboardController(MotherboardRepository repository, ConfigurationRepository configurationRepository) {
         this.repository = repository;
         this.configurationRepository = configurationRepository;

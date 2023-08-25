@@ -6,6 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Abstract ComputerPart class, that consists of every piece of information
+ * that every computer part has, such as:
+ * part id, name, manufacturer and price (zł).
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
