@@ -80,6 +80,11 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -103,6 +108,27 @@
 				<configuration>
 					<version>1</version>
 					<projectId>zti-mariusz</projectId>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<id>Inject version and project id to deployment.yml</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<executable>${basedir}/prepare-deployment.sh</executable>
+					<arguments>
+						<argument>sublime-oxygen-396018</argument>
+						<argument>${project.version}</argument>
+					</arguments>
 				</configuration>
 			</plugin>
 		</plugins>
