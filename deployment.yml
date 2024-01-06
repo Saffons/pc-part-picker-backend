@@ -1,50 +1,105 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-app
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: "2024-01-05T10:25:05Z"
+  generation: 1
   labels:
-    app: test-app
-    environment: test
+    app: hello-java
+  name: hello-java
+  namespace: default
+  resourceVersion: "2295"
+  uid: 27c9066d-fc06-4054-93d2-4caf812d4099
 spec:
+  progressDeadlineSeconds: 600
   replicas: 1
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
-      environment: test
-      app: test-app
+      app: hello-java
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
+      creationTimestamp: null
       labels:
-        environment: test
-        app: test-app
+        app: hello-java
     spec:
       containers:
-        - name: test-app
-          image: gcr.io/sublime-oxygen-396018/gke-terraform-demo:{{IMAGE_VERSION}}
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 8080
-          livenessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8080
-            initialDelaySeconds: 120
-          readinessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8080
-
+        - image: us-central1-docker.pkg.dev/sublime-oxygen-396018/codelabrepo/hello-java:v2
+          imagePullPolicy: IfNotPresent
+          name: hello-java
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+    - lastTransitionTime: "2024-01-05T10:25:15Z"
+      lastUpdateTime: "2024-01-05T10:25:15Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2024-01-05T10:25:05Z"
+      lastUpdateTime: "2024-01-05T10:25:15Z"
+      message: ReplicaSet "hello-java-757dd8c5cd" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+  observedGeneration: 1
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: test-app
-  labels:
-    run: test-app
+  name: hello-java-svc
 spec:
-  type: LoadBalancer
   ports:
-    - port: 8080
+    - port: 80
+      targetPort: 80
       protocol: TCP
+      name: http
   selector:
-    app: test-app
-    environment: test
+    app: hello-java
+  type: NodePort
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-java-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: hello-javaexample
+    networking.gke.io/managed-certificates: managed-cert
+spec:
+  rules:
+    - host: 34.70.159.55
+      http:
+        paths:
+          - path: /
+            backend:
+              service:
+                name: hello-java
+                port:
+                  number: 8080
+            pathType: ImplementationSpecific
+
+---
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: managed-cert
+spec:
+  domains:
+    - 34.70.159.55
