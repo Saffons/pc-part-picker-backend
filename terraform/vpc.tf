@@ -89,7 +89,7 @@ resource "google_container_node_pool" "primary_nodes" {
 }
 
 resource "kubectl_manifest" "my_service" {
-  yaml_body = file("${path.module}/backend_pod.yml", { PROJECT_ID = var.project_id })
+  yaml_body = templatefile("${path.module}/backend_pod.yml", { PROJECT_ID = var.project_id })
 }
 
 # # Kubernetes provider

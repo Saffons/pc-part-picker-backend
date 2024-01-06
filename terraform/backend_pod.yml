@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: test-app
-          image: us-central1-docker.pkg.dev/{{PROJECT_ID}}/codelabrepo/hello-java:v2
+          image: us-central1-docker.pkg.dev/${PROJECT_ID}/codelabrepo/hello-java:v2
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
