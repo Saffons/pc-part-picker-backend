@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-app
+  labels:
+    app: test-app
+    environment: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      environment: test
+      app: test-app
+  template:
+    metadata:
+      labels:
+        environment: test
+        app: test-app
+    spec:
+      containers:
+        - name: test-app
+          image: us-central1-docker.pkg.dev/{{PROJECT_ID}}/codelabrepo/hello-java:v2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 120
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080

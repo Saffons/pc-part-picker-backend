@@ -19,7 +19,6 @@ resource "google_compute_subnetwork" "subnet" {
 }
 
 # GKE
-
 variable "gke_username" {
   default     = "roocik"
   description = "GKE username"
@@ -32,7 +31,7 @@ variable "gke_password" {
 
 variable "gke_num_nodes" {
   default     = 2
-  description = "number of gke nodes"
+  description = "Number of GKE nodes"
 }
 
 # GKE cluster
@@ -89,6 +88,9 @@ resource "google_container_node_pool" "primary_nodes" {
   }
 }
 
+resource "kubectl_manifest" "my_service" {
+  yaml_body = file("${path.module}/backend_pod.yml", { PROJECT_ID = var.project_id })
+}
 
 # # Kubernetes provider
 # # The Terraform Kubernetes Provider configuration below is used as a learning reference only.
