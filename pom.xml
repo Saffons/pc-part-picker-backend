@@ -109,7 +109,7 @@
 					<projectId>zti-mariusz</projectId>
 				</configuration>
 			</plugin>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>3.1.1</version>
@@ -129,7 +129,7 @@
 						<argument>${project.version}</argument>
 					</arguments>
 				</configuration>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 

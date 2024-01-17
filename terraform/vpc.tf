@@ -4,6 +4,16 @@ provider "google" {
   zone = var.zone
 }
 
+data "google_client_config" "default" {
+}
+
+provider "kubectl" {
+  load_config_file       = false
+  host                   = "https://${data.google_container_cluster.my_cluster.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = "${base64decode(data.google_container_cluster.my_cluster.master_auth.0.cluster_ca_certificate)}"
+}
+
 # VPC
 resource "google_compute_network" "vpc" {
   name                    = "${var.project_id}-vpc"
@@ -12,26 +22,10 @@ resource "google_compute_network" "vpc" {
 
 # Subnet
 resource "google_compute_subnetwork" "subnet" {
-  name          = "${var.project_id}-subnet"
-  region        = var.region
-  network       = google_compute_network.vpc.name
+  name          = "test-subnetwork"
   ip_cidr_range = "10.10.0.0/24"
-}
-
-# GKE
-variable "gke_username" {
-  default     = "roocik"
-  description = "GKE username"
-}
-
-variable "gke_password" {
-  default     = "roocik"
-  description = "GKE password"
-}
-
-variable "gke_num_nodes" {
-  default     = 2
-  description = "Number of GKE nodes"
+  region        = var.region
+  network       = google_compute_network.vpc.id
 }
 
 # GKE cluster
@@ -40,14 +34,9 @@ data "google_container_engine_versions" "gke_version" {
   version_prefix = "1.27."
 }
 
-resource "google_service_account" "default" {
-  account_id   = "service-account-id-181818"
-  display_name = "Service Account"
-}
-
 resource "google_container_cluster" "primary" {
   name     = "${var.project_id}-gke"
-  location = var.zone
+  location = var.region
 
   # We can't create a cluster with no node pool defined, but we want to only use
   # separately managed node pools. So we create the smallest possible default
@@ -59,6 +48,14 @@ resource "google_container_cluster" "primary" {
   subnetwork = google_compute_subnetwork.subnet.name
 }
 
+data "google_container_cluster" "my_cluster" {
+  name     = "${var.project_id}-gke"
+  location = "europe-central2"
+  depends_on = [
+    google_container_cluster.primary
+  ]
+}
+
 # Separately Managed Node Pool
 resource "google_container_node_pool" "primary_nodes" {
   name       = google_container_cluster.primary.name
@@ -66,7 +63,7 @@ resource "google_container_node_pool" "primary_nodes" {
   cluster    = google_container_cluster.primary.name
 
   version = data.google_container_engine_versions.gke_version.release_channel_default_version["STABLE"]
-  node_count = var.gke_num_nodes
+  node_count = 2
 
   node_config {
     service_account = google_service_account.default.email
@@ -80,7 +77,8 @@ resource "google_container_node_pool" "primary_nodes" {
     }
 
     # preemptible  = true
-    machine_type = "n1-standard-1"
+    machine_type = "e2-medium"
+    disk_size_gb = 10
     tags         = ["gke-node", "${var.project_id}-gke"]
     metadata = {
       disable-legacy-endpoints = "true"
@@ -88,25 +86,22 @@ resource "google_container_node_pool" "primary_nodes" {
   }
 }
 
-resource "kubectl_manifest" "my_service" {
-  yaml_body = templatefile("${path.module}/backend_pod.yml", { PROJECT_ID = var.project_id })
+resource "kubectl_manifest" "namespace" {
+  yaml_body = file("${path.module}/namespace.yml")
 }
 
-# # Kubernetes provider
-# # The Terraform Kubernetes Provider configuration below is used as a learning reference only.
-# # It references the variables and resources provisioned in this file.
-# # We recommend you put this in another file -- so you can have a more modular configuration.
-# # https://learn.hashicorp.com/terraform/kubernetes/provision-gke-cluster#optional-configure-terraform-kubernetes-provider
-# # To learn how to schedule deployments and services using the provider, go here: https://learn.hashicorp.com/tutorials/terraform/kubernetes-provider.
+resource "kubectl_manifest" "backend_pod" {
+  yaml_body = templatefile("${path.module}/backend_pod.yml", { 
+    PROJECT_ID = var.project_id
+    })
+  depends_on = [
+    kubectl_manifest.namespace
+  ]
+}
 
-# provider "kubernetes" {
-#   load_config_file = "false"
-
-#   host     = google_container_cluster.primary.endpoint
-#   username = var.gke_username
-#   password = var.gke_password
-
-#   client_certificate     = google_container_cluster.primary.master_auth.0.client_certificate
-#   client_key             = google_container_cluster.primary.master_auth.0.client_key
-#   cluster_ca_certificate = google_container_cluster.primary.master_auth.0.cluster_ca_certificate
-# }
+resource "kubectl_manifest" "backend_service" {
+  yaml_body = file("${path.module}/backend_service.yml")
+  depends_on = [
+    kubectl_manifest.namespace
+  ]
+}

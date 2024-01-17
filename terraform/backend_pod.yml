@@ -5,6 +5,8 @@ metadata:
   labels:
     app: test-app
     environment: test
+    namespace: namespace-label
+  namespace: namespace
 spec:
   replicas: 1
   selector:
@@ -16,11 +18,14 @@ spec:
       labels:
         environment: test
         app: test-app
+        namespace: namespace-label
     spec:
+      serviceAccountName: admin-user
       containers:
         - name: test-app
-          image: us-central1-docker.pkg.dev/${PROJECT_ID}/codelabrepo/hello-java:v2
-          imagePullPolicy: Always
+          # image: us-central1-docker.pkg.dev/{{PROJECT_ID}}/codelabrepo/hello-java:v2
+          image: us-central1-docker.pkg.dev/sublime-oxygen-396018/codelabrepo/hello-java:v2
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
           livenessProbe:
