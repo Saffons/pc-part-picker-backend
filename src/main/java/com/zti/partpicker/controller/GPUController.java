@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Controller class responsible for handling GPU-related operations and endpoints.
  */
-@CrossOrigin(origins = "https://kaktus-react-spring.netlify.app")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/parts/gpu")
 public class GPUController {

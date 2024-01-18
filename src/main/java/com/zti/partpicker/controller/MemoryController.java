@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Controller class responsible for handling Memory-related operations and endpoints.
  */
-@CrossOrigin(origins = "https://kaktus-react-spring.netlify.app")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/parts/memory")
 public class MemoryController {

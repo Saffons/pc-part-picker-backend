@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Controller class responsible for handling token-related operations and endpoints.
  */
-@CrossOrigin(origins = "https://kaktus-react-spring.netlify.app")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/token")
 public class TokenController {

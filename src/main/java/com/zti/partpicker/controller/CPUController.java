@@ -14,7 +14,8 @@ import java.util.List;
 /**
  * Controller class responsible for handling CPU-related operations and endpoints.
  */
-@CrossOrigin(origins = "https://kaktus-react-spring.netlify.app")
+//@CrossOrigin(origins = "https://kaktus-react-spring.netlify.app")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/parts/cpu")
 public class CPUController {
