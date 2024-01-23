@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Controller class responsible for handling configuration-related operations and endpoints.
  */
-//@CrossOrigin(origins = "34.118.122.167")
+
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/configuration")

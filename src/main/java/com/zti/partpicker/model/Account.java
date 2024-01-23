@@ -13,7 +13,6 @@ import java.util.List;
  * accountId, login, password, role, firstName, lastName, email
  * and list of user's configurations.
  */
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

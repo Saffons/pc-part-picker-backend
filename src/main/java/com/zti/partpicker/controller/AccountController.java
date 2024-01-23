@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Controller class responsible for handling account-related operations and endpoints.
  */
-//@CrossOrigin(origins = "34.118.122.167")
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/auth/account")
@@ -53,6 +52,11 @@ public class AccountController {
     @GetMapping("/hey")
     public String hello(Authentication authentication) {
         return "Hello, " + authentication.getName() + "!" + authentication.getAuthorities();
+    }
+
+    @GetMapping("/hello")
+    public String helloo() {
+        return "Hello!";
     }
 
     /**
