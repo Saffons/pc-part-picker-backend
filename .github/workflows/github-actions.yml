@@ -2,7 +2,6 @@ name: AzureSpringApps
 on: push
 env:
   ASC_PACKAGE_PATH: ${{ github.workspace }}
-  AZURE_SUBSCRIPTION: 512577aa-81d4-4efb-bc4d-abac5c589a52
 
 jobs:
   deploy_to_production:
@@ -32,9 +31,9 @@ jobs:
       - name: deploy to production with artifact
         uses: azure/spring-apps-deploy@v1
         with:
-          azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
+          azure-subscription: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           action: Deploy
-          service-name: <service instance name>
-          app-name: <app name>
+          service-name: asa-qo5x7ny3q7hme-standard
+          app-name: projekt-backend
           use-staging-deployment: false
           package: ${{ env.ASC_PACKAGE_PATH }}/**/*.jar
