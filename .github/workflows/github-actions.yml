@@ -2,6 +2,9 @@ name: AzureSpringApps
 on: push
 env:
   ASC_PACKAGE_PATH: ${{ github.workspace }}
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   deploy_to_production:
@@ -24,10 +27,16 @@ jobs:
       - name: Azure login
         uses: azure/login@v1
         with:
-          auth-type: IDENTITY
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Azure CLI script
+        uses: azure/CLI@v1
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az account show
 
       - name: deploy to production with artifact
         uses: azure/spring-apps-deploy@v1
