@@ -43,7 +43,8 @@ jobs:
         with:
           azure-subscription: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           action: Deploy
-          service-name: asa-qo5x7ny3q7hme-standard
+#          service-name: asa-qo5x7ny3q7hme-standard
+          service-name: demo
           app-name: projekt-backend
           use-staging-deployment: false
           package: ${{ env.ASC_PACKAGE_PATH }}/**/*.jar
