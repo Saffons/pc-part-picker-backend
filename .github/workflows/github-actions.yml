@@ -20,11 +20,15 @@ jobs:
           distribution: "temurin"
           java-version: 17
 
-      - name: maven build, clean
+      - name: Run tests
+        run: |
+          mvn test
+
+      - name: Package the JAR
         run: |
           mvn clean package
 
-      - name: Azure login
+      - name: Login to Azure
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
@@ -38,13 +42,12 @@ jobs:
           inlineScript: |
             az account show
 
-      - name: deploy to production with artifact
+      - name: Deploy JAR to production
         uses: azure/spring-apps-deploy@v1
         with:
           azure-subscription: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           action: Deploy
           service-name: asa-qo5x7ny3q7hme-standard
-#          service-name: demo
           app-name: projekt-backend
           use-staging-deployment: false
           package: ${{ env.ASC_PACKAGE_PATH }}/**/*.jar
