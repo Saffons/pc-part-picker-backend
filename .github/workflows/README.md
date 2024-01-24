@@ -2,8 +2,8 @@
 
 In Azure Portal:
 1. Create User-Assigned Managed Identity (https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities)
-2. In Access Control (IAM) section add proper roles to the identity (for example Privileged administrator roles - Contributor)
-3. In Federated Credentials section configure GitHub issued token for Azure deployments.
+2. In Federated Credentials section configure GitHub issued token for Azure deployments.
+3. In Azure Spring Apps (or sth else) go to Access Control (IAM) section and add proper privileges (for example Privileged administrator roles - Contributor)
 
 In GitHub .yml file:
 1. Checkout (actions/checkout@v4)
@@ -17,3 +17,6 @@ permissions: \
 &nbsp;&nbsp;&nbsp;&nbsp;id-token: write \
 &nbsp;&nbsp;&nbsp;&nbsp;contents: read \
 in the global scope of .yml file
+
+Logs stream:
+az spring app logs --resource-group Projekt_Mariusz_Marszalek_EU_West --service asa-qo5x7ny3q7hme-standard --name projekt-backend --follow
