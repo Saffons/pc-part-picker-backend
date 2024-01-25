@@ -1,5 +1,12 @@
 ### GitHub Actions with Azure helper (by me)
 
+Actions descriptions:
+https://github.com/marketplace/actions/azure-spring-apps \
+Adding repo secrets:
+https://github.com/Saffons/pc-part-picker-backend/settings/secrets/actions \
+Auth in Azure:
+https://github.com/Azure/login#readme
+
 In Azure Portal:
 1. Create User-Assigned Managed Identity (https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities)
 2. In Federated Credentials section configure GitHub issued token for Azure deployments.

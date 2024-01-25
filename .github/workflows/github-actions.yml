@@ -1,7 +1,15 @@
 name: AzureSpringApps
-on: push
+
+on:
+  push:
+    branches: ['azure-master']
+    paths:
+      - 'src/**'
+      - 'pom.xml'
+
 env:
   ASC_PACKAGE_PATH: ${{ github.workspace }}
+
 permissions:
   id-token: write
   contents: read
