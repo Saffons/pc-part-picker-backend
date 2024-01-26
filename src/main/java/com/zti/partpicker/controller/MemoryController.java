@@ -2,8 +2,13 @@ package com.zti.partpicker.controller;
 
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.zti.partpicker.exception.MemoryNotFoundException;
 import com.zti.partpicker.model.Memory;
+import com.zti.partpicker.model.PubSubPayload;
+import com.zti.partpicker.pubsub.PubSub;
 import com.zti.partpicker.repository.ConfigurationRepository;
 import com.zti.partpicker.repository.MemoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +28,10 @@ public class MemoryController {
 
     @Autowired
     private final ConfigurationRepository configurationRepository;
+
+    @Autowired
+    private PubSub.PubsubOutboundGateway messagingGateway;
+
 
     /**
      * Constructor for the MemoryController class.
@@ -52,7 +61,11 @@ public class MemoryController {
      * @return The saved Memory object.
      */
     @PostMapping
-    Memory newMemory(@RequestBody Memory newMemory) {
+    Memory newMemory(@RequestBody Memory newMemory) throws JsonProcessingException {
+        ObjectWriter ow = new ObjectMapper().writer();
+        String json = ow.writeValueAsString(new PubSubPayload("ROLE_USER", newMemory.getName(), newMemory.getManufacturer(), newMemory.getPrice()));
+        messagingGateway.sendToPubsub(json);
+
         return repository.save(newMemory);
     }
 

@@ -2,8 +2,13 @@ package com.zti.partpicker.controller;
 
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.zti.partpicker.exception.GPUNotFoundException;
 import com.zti.partpicker.model.GPU;
+import com.zti.partpicker.model.PubSubPayload;
+import com.zti.partpicker.pubsub.PubSub;
 import com.zti.partpicker.repository.ConfigurationRepository;
 import com.zti.partpicker.repository.GPURepository;
 import jakarta.annotation.security.RolesAllowed;
@@ -24,6 +29,10 @@ public class GPUController {
 
     @Autowired
     private final ConfigurationRepository configurationRepository;
+
+    @Autowired
+    private PubSub.PubsubOutboundGateway messagingGateway;
+
 
     /**
      * Constructor for the GPUController class.
@@ -54,7 +63,10 @@ public class GPUController {
      * @return The saved GPU object.
      */
     @PostMapping
-    GPU newGPU(@RequestBody GPU newGPU) {
+    GPU newGPU(@RequestBody GPU newGPU) throws JsonProcessingException {
+        ObjectWriter ow = new ObjectMapper().writer();
+        String json = ow.writeValueAsString(new PubSubPayload("ROLE_USER", newGPU.getName(), newGPU.getManufacturer(), newGPU.getPrice()));
+        messagingGateway.sendToPubsub(json);
         return repository.save(newGPU);
     }
 

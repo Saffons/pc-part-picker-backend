@@ -2,9 +2,14 @@ package com.zti.partpicker.controller;
 
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.zti.partpicker.exception.CPUNotFoundException;
 import com.zti.partpicker.exception.StorageNotFoundException;
+import com.zti.partpicker.model.PubSubPayload;
 import com.zti.partpicker.model.Storage;
+import com.zti.partpicker.pubsub.PubSub;
 import com.zti.partpicker.repository.ConfigurationRepository;
 import com.zti.partpicker.repository.StorageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +29,10 @@ public class StorageController {
 
     @Autowired
     private final ConfigurationRepository configurationRepository;
+
+    @Autowired
+    private PubSub.PubsubOutboundGateway messagingGateway;
+
 
     /**
      * Constructor for the StorageController class.
@@ -53,7 +62,10 @@ public class StorageController {
      * @return The saved Storage object.
      */
     @PostMapping
-    Storage newStorage(@RequestBody Storage newStorage) {
+    Storage newStorage(@RequestBody Storage newStorage) throws JsonProcessingException {
+        ObjectWriter ow = new ObjectMapper().writer();
+        String json = ow.writeValueAsString(new PubSubPayload("ROLE_USER", newStorage.getName(), newStorage.getManufacturer(), newStorage.getPrice()));
+        messagingGateway.sendToPubsub(json);
         return repository.save(newStorage);
     }
 

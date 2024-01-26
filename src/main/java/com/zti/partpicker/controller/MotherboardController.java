@@ -2,8 +2,13 @@ package com.zti.partpicker.controller;
 
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.zti.partpicker.exception.MotherboardNotFoundException;
 import com.zti.partpicker.model.Motherboard;
+import com.zti.partpicker.model.PubSubPayload;
+import com.zti.partpicker.pubsub.PubSub;
 import com.zti.partpicker.repository.ConfigurationRepository;
 import com.zti.partpicker.repository.MotherboardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +29,10 @@ public class MotherboardController {
     @Autowired
     private final ConfigurationRepository configurationRepository;
 
+    @Autowired
+    private PubSub.PubsubOutboundGateway messagingGateway;
+
+
     /**
      * Constructor for the MotherboardController class.
      *
@@ -41,7 +50,10 @@ public class MotherboardController {
     }
 
     @PostMapping
-    Motherboard newMotherboard(@RequestBody Motherboard newMotherboard) {
+    Motherboard newMotherboard(@RequestBody Motherboard newMotherboard) throws JsonProcessingException {
+        ObjectWriter ow = new ObjectMapper().writer();
+        String json = ow.writeValueAsString(new PubSubPayload("ROLE_USER", newMotherboard.getName(), newMotherboard.getManufacturer(), newMotherboard.getPrice()));
+        messagingGateway.sendToPubsub(json);
         return repository.save(newMotherboard);
     }
 

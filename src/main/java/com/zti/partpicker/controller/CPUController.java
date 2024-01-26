@@ -1,8 +1,13 @@
 package com.zti.partpicker.controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.zti.partpicker.exception.CPUNotFoundException;
 import com.zti.partpicker.model.CPU;
+import com.zti.partpicker.model.PubSubPayload;
+import com.zti.partpicker.pubsub.PubSub;
 import com.zti.partpicker.repository.CPURepository;
 import com.zti.partpicker.repository.ConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +30,10 @@ public class CPUController {
 
     @Autowired
     private final ConfigurationRepository configurationRepository;
+
+    @Autowired
+    private PubSub.PubsubOutboundGateway messagingGateway;
+
 
     /**
      * Constructor for the CPUController class.
@@ -54,7 +63,10 @@ public class CPUController {
      * @return The saved CPU object.
      */
     @PostMapping
-    CPU newCPU(@RequestBody CPU newCPU) {
+    CPU newCPU(@RequestBody CPU newCPU) throws JsonProcessingException {
+        ObjectWriter ow = new ObjectMapper().writer();
+        String json = ow.writeValueAsString(new PubSubPayload("ROLE_USER", newCPU.getName(), newCPU.getManufacturer(), newCPU.getPrice()));
+        messagingGateway.sendToPubsub(json);
         return repository.save(newCPU);
     }
 

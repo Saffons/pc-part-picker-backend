@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.util.stream.Collectors;
 
 import com.zti.partpicker.model.AccountDetails;
+import com.zti.partpicker.pubsub.PubSub;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 /**
  * Controller class responsible for handling token-related operations and endpoints.
@@ -23,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class TokenController {
 
     private final JwtEncoder encoder;
-
     public TokenController(JwtEncoder encoder) {
         this.encoder = encoder;
     }
@@ -51,7 +53,6 @@ public class TokenController {
                 .id(((AccountDetails) authentication.getPrincipal()).getId().toString())
                 .claim("scope", scope)
                 .build();
-
         return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
